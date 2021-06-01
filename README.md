@@ -7,5 +7,7 @@
 
 ## 개발일지
 
+uvicorn main:app --reload
+
 ### 5.24
 FastAPI 기본코드 알아보기
