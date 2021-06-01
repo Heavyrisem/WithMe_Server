@@ -11,3 +11,6 @@ uvicorn main:app --reload
 
 ### 5.24
 FastAPI 기본코드 알아보기
+
+### 5.27
+Nginx Loadbalance 서버 구축
