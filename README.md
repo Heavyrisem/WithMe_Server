@@ -14,3 +14,6 @@ FastAPI 기본코드 알아보기
 
 ### 5.27
 Nginx Loadbalance 서버 구축
+
+### 6.4
+서버 API 이름 변경, OCR 테스트 API 추가
