@@ -28,7 +28,7 @@ def read_root():
 
 
 @app.post("/caption")
-async def run_ai(file: UploadFile = File(...)):
+async def run_imageCaption(file: UploadFile = File(...)):
     image = await file.read()
     print(type(image))
     testResult = ["코딩을 하는 한지수가 보이네요", "잠을 자는 동현이가 보이네요", "책상 위에 놓인 노트북이 보이네요", "물병 두 개가 보이네요"]
