@@ -17,3 +17,6 @@ Nginx Loadbalance 서버 구축
 
 ### 6.4
 서버 API 이름 변경, OCR 테스트 API 추가
+
+### 6.7
+Google Cloud Vision API 추가 (OCR)
