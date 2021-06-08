@@ -6,7 +6,7 @@ const options = {
     path: '/ocr',
     port: 3000,
     method: 'POST',
-    image: '../ocr/testData/w.jpeg'
+    image: '../ocr/testData/icon.png'
 };
 
 (async() => {
@@ -17,24 +17,32 @@ const options = {
         serverSocket.on('error', (e) => {console.log(e)})
 
         const Image = await ReadImage(options.image);
-        console.log(Image.data.byteLength);
-        const Boundary = Date.now().toString();
-        // const Boundary = '------------------------371b07a4de59af19';
+        console.log(Buffer.from(Image.data).byteLength);
+        // const Boundary = Date.now().toString();
+        const Boundary = '------------------------baef9fd53a1d34cd';
+        const Header = [
+            `${options.method} ${options.path} HTTP/1.1`,
+            // `Content-Length: ${Buffer.from(Body.join('\r\n')+'\r\n').byteLength}`,
+            'Accept: */*',
+            `Host: ${options.host}${(options.port!=80)?':'+options.port:''}`,
+            `Content-Type: multipart/form-data; boundary=${Boundary}`,
+            ''
+        ]
+
+
+
         const Body = [
-            // '',
             `--${Boundary}`,
             `Content-Disposition: form-data; name="file"; filename="${options.image.split('/').pop()}"`,
             `Content-Type: image/${Image.extension}`,
             '',
             Image.data,
-            // '',
-            // 'data',
             `--${Boundary}--`,
-            // ''
         ]
+        console.log(Image.data)
         const SendingData = [
             `${options.method} ${options.path} HTTP/1.1`,
-            `Content-Length: ${Buffer.from(Body.join('\r\n')).byteLength}`,
+            `Content-Length: ${Buffer.from(Body.join('\r\n')+'\r\n').byteLength}`,
             'Accept: */*',
             // 'Expect: 100-continue',
             // 'Accept-Encoding: gzip, deflate',
@@ -59,9 +67,10 @@ const options = {
 // ReadImage(options.image).then(v => {
 //     console.log(v.data);
 // })
-function ReadImage(location: string): Promise<{data: Buffer, extension: undefined | string}> {
+function ReadImage(location: string): Promise<{data: string, extension: undefined | string}> {
     return new Promise(resolve => {
-        const data = fs.readFileSync(location);
+        const data = fs.readFileSync(location, {encoding: 'binary'});
+        console.log("l",data.length)
         const extension = location.split('.').pop();
 
         return resolve({data: data, extension: extension})
