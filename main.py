@@ -34,6 +34,7 @@ async def run_Image_Caption(file: UploadFile = File(...)):
 
 @app.post("/ocr", response_model=API_Response)
 async def run_ocr(file: UploadFile = File(...)):
+    print(file.filename)
     Return = API_Response()
     ALLOW_TYPES = ['jpg', 'jpeg', 'png', 'jpg']
     file_type = file.filename.split(".")[-1]
@@ -43,8 +44,13 @@ async def run_ocr(file: UploadFile = File(...)):
             status_code=422,
             detail="not allowed extension"
         )
-
     image = await file.read()
+    # print(image)
+    f = open(file.filename, 'wb')
+    # for b in image:
+    #     print(b)
+    f.write(image)
+    f.close()
     detection = Prediction_OCR(image)
 
     if (detection and detection.result):
