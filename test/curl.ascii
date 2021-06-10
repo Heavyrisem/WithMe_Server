@@ -1,0 +1,51 @@
+== Info:   Trying ::1:3000...
+== Info: connect to ::1 port 3000 failed: Connection refused
+== Info:   Trying 127.0.0.1:3000...
+== Info: Connected to localhost (127.0.0.1) port 3000 (#0)
+=> Send header, 190 bytes (0xbe)
+0000: POST /ocr HTTP/1.1
+0014: Host: localhost:3000
+002a: User-Agent: curl/7.76.0
+0043: Accept: */*
+0050: Content-Length: 1043
+0066: Content-Type: multipart/form-data; boundary=--------------------
+00a6: ----cba93416ef8b0b11
+00bc: 
+=> Send data, 1043 bytes (0x413)
+0000: --------------------------cba93416ef8b0b11
+002c: Content-Disposition: form-data; name="file"; filename="icon.png"
+006e: Content-Type: image/png
+0087: 
+0089: .PNG
+008f: ......IHDR.............\r.f...!IDATx......!..... .I.....d......
+00cf: ..]..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a.
+010f: .a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..
+014f: a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a
+018f: ..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a.
+01cf: .a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..
+020f: a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a
+024f: ..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a.
+028f: .a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..
+02cf: a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a
+030f: ..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a.
+034f: .a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..
+038f: a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..a..U3..
+03cf: ............IEND.B`.
+03e5: --------------------------cba93416ef8b0b11--
+== Info: We are completely uploaded and fine
+== Info: Mark bundle as not supporting multiuse
+<= Recv header, 17 bytes (0x11)
+0000: HTTP/1.1 200 OK
+<= Recv header, 37 bytes (0x25)
+0000: date: Thu, 10 Jun 2021 07:01:29 GMT
+<= Recv header, 17 bytes (0x11)
+0000: server: uvicorn
+<= Recv header, 20 bytes (0x14)
+0000: content-length: 29
+<= Recv header, 32 bytes (0x20)
+0000: content-type: application/json
+<= Recv header, 2 bytes (0x2)
+0000: 
+<= Recv data, 29 bytes (0x1d)
+0000: {"result":null,"detail":null}
+== Info: Connection #0 to host localhost left intact

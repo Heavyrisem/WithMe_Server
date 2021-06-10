@@ -1,5 +1,25 @@
 import net from 'net';
 import fs from 'fs';
+import util from 'util';
+import iconv from 'iconv-lite';
+
+import http from 'http';
+
+// http.createServer((req, res) => {
+//     req.on('data', c => {
+//         console.log("=======================================================================================")
+//         let bin = c.toString().split('\r\n')[4] + '\r\n' + c.toString().split('\r\n')[5];
+//         console.log(bin);
+//         fs.writeFileSync('./out.png', bin, 'binary');
+//     });
+//     res.on('finish', () => process.exit())
+//     res.writeHead(200, {'Content-Type': 'text/html'});
+//     res.end('Hello World');
+// }).listen(3001);
+
+const A = '\x89PNG\r\n\x1A\n\x00\x00\x00\rIHDR\x00\x00\x01\x00\x00\x00\x01\x00\b\x06\x00\x00\x00\\r¨f\x00\x00\x03!IDATx\x9CíÔ\x01\r\x00!\x10À°ãå \x05I\x98\x7F\x84¬µ°dëìû\x0F\x90ôÉ\x0E]\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00U3ó\x00\x97í\x03í°ãÌ\x1A\x00\x00\x00\x00IEND®B`\x82'
+
+const b = '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x01\x00\x00\x00\x01\x00\x08\x06\x00\x00\x00\\r\xa8f\x00\x00\x03!IDATx\x9c\xed\xd4\x01\r\x00!\x10\xc0\xb0\xe3\xe5 \x05I\x98\x7f\x84\xac\xb5\xb0d\xeb\xec\xfb\x0f\x90\xf4\xc9\x0e]\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00a\x06\x00U3\xf3\x00\x97\xed\x03\xed\xb0\xe3\xcc\x1a\x00\x00\x00\x00IEND\xaeB`\x82'
 
 const options = {
     host: 'localhost',
@@ -8,7 +28,10 @@ const options = {
     method: 'POST',
     image: '../ocr/testData/icon.png'
 };
-
+// console.log("B")
+// process.stdout.write(Buffer.from("89504e47", 'hex').toString('binary'))
+// fs.writeFileSync('./writetest', Buffer.from("89504e47", 'hex').toString('binary'), {encoding: 'binary'});
+// console.log(Buffer.from("89504e47", 'hex'))
 (async() => {
     const serverSocket = net.connect(options.port, options.host, async () => {
         serverSocket.on("data", (b) => {
@@ -17,62 +40,99 @@ const options = {
         serverSocket.on('error', (e) => {console.log(e)})
 
         const Image = await ReadImage(options.image);
-        console.log(Buffer.from(Image.data).byteLength);
+        // console.log(Buffer.from(Image.data, "binary").byteLength);
         // const Boundary = Date.now().toString();
-        const Boundary = '------------------------baef9fd53a1d34cd';
-        const Header = [
-            `${options.method} ${options.path} HTTP/1.1`,
-            // `Content-Length: ${Buffer.from(Body.join('\r\n')+'\r\n').byteLength}`,
-            'Accept: */*',
-            `Host: ${options.host}${(options.port!=80)?':'+options.port:''}`,
-            `Content-Type: multipart/form-data; boundary=${Boundary}`,
-            ''
-        ]
-
-
-
+        const Boundary = '------------------------d599bfa08c4b3286';
         const Body = [
             `--${Boundary}`,
             `Content-Disposition: form-data; name="file"; filename="${options.image.split('/').pop()}"`,
-            `Content-Type: image/${Image.extension}`,
-            '',
-            Image.data,
+            `Content-Type: image/${Image.extension}\r\n`,
+            // '',
+            Image.data.toString('binary'),
             `--${Boundary}--`,
+            // ''
         ]
-        console.log(Image.data)
-        const SendingData = [
+        const Header = [
             `${options.method} ${options.path} HTTP/1.1`,
-            `Content-Length: ${Buffer.from(Body.join('\r\n')+'\r\n').byteLength}`,
-            'Accept: */*',
-            // 'Expect: 100-continue',
-            // 'Accept-Encoding: gzip, deflate',
             `Host: ${options.host}${(options.port!=80)?':'+options.port:''}`,
-            `Content-Type: multipart/form-data; boundary=${Boundary}\r\n`,
-            // 'Content-Disposition: form-data; name="description"',
-            // 'User-Agent: WithMe_Tester/1.0',
+            `Content-Length: ${Buffer.from(Body.join('\r\n')).byteLength}`,
+            'User-Agent: curl/7.76',
+            'Accept: */*',
+            `Content-Type: multipart/form-data; boundary=${Boundary}`,
+            '',
+        ]
+        const SendingData = [
+            ...Header,
             ...Body
         ]
-        // console.log(SendingData.join('\r\n'));
-        // return
-        console.log(Buffer.from(SendingData.join('\r\n')).byteLength);
-        fs.writeFileSync('./http', SendingData.join('\r\n'));
 
-        for (const Data of SendingData) {
-            serverSocket.write(Buffer.from(Data + "\r\n"));
-        }
+        Buffer.from(SendingData.join('\r\n'), 'binary').forEach((v,idx) => {
+            process.stdout.write(v.toString(16)+" ");
+            if (!((idx+1) % 16)) console.log();
+        })
 
-        serverSocket.end();
+        
+
+        let BinHeader = new Uint8Array(Buffer.from(Header.join('\r\n'), 'binary').byteLength);
+        let BinBody = new Uint8Array(Buffer.from(Body.join('\r\n'), 'binary').byteLength);
+        let BinLine: Array<number> = [];
+        let c = 0;
+        // console.log(Buffer.from(SendingData.join('\r\n'), 'binary'));
+        Buffer.from(Header.join('\r\n'), 'binary').forEach((v, idx) => {
+            BinLine.push(v);
+            if (BinLine.length == 8) {
+                BinHeader.set(BinLine, c);
+                BinLine = [];
+                c+=7;
+            }
+        })
+        BinLine = [];
+        c = 0;
+        Buffer.from(Body.join('\r\n'), 'binary').forEach((v, idx) => {
+            BinLine.push(v);
+            if (BinLine.length == 8) {
+                BinBody.set(BinLine, c);
+                BinLine = [];
+                c+=7;
+            }
+        })
+        console.log(BinHeader);
+        console.log(BinBody);
+
+        fs.writeFileSync('./http', Header.join('\r\n') + Body.join('\r\n'), 'binary');
+        // serverSocket.write(Buffer.from(SendingData.join('\r\n'), 'binary'));
+        // serverSocket.write(Buffer.from(Header.join('\r\n'), 'binary'));
+        serverSocket.write(BinHeader);
+        serverSocket.end(BinBody);
+        // for (const Data of SendingData) {
+        //     // serverSocket.write(Buffer.from(Data + "\r\n", ));
+        //     let binary = toArrayBuffer(Buffer.from(Data+"\r\n", 'utf8'))
+        //     // binary.set
+        //     if (Data == '') serverSocket.write("\r\n");
+        //     else serverSocket.write(binary);
+        // }
+
+        // serverSocket.end();
     });
 })();
-// ReadImage(options.image).then(v => {
-//     console.log(v.data);
-// })
-function ReadImage(location: string): Promise<{data: string, extension: undefined | string}> {
+function ReadImage(location: string): Promise<{data: Buffer, extension: undefined | string}> {
     return new Promise(resolve => {
-        const data = fs.readFileSync(location, {encoding: 'binary'});
-        console.log("l",data.length)
+        const data = Buffer.from(fs.readFileSync(location, 'binary'), 'binary');
+        // const data = fs.readFileSync(location, 'utf8');
+        console.log(data.slice(0, 8),data.length);
+
         const extension = location.split('.').pop();
 
         return resolve({data: data, extension: extension})
     })
+}
+
+
+function toArrayBuffer(buf: Buffer) {
+    var ab = new ArrayBuffer(buf.length);
+    var view = new Uint8Array(ab);
+    for (var i = 0; i < buf.length; ++i) {
+        view[i] = buf[i];
+    }
+    return view;
 }
