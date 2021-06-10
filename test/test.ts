@@ -2,11 +2,11 @@ import net from 'net';
 import fs from 'fs';
 
 const options = {
-    host: 'localhost',
+    host: '52.231.160.102',
     path: '/ocr',
-    port: 3000,
+    port: 80,
     method: 'POST',
-    image: '../ocr/testData/text1.png'
+    image: '../ocr/testData/cap.png'
 };
 
 (async() => {
@@ -15,6 +15,7 @@ const options = {
             console.log(b.toString());
         });
         serverSocket.on('error', (e) => {console.log(e)})
+        serverSocket.on('drain', () => {process.exit()})
 
         const Image = await ReadImage(options.image);
         const Boundary = '------------------------d599bfa08c4b3286';
@@ -56,7 +57,7 @@ const options = {
         fs.writeFileSync('./http', Header.join('\r\n') + Body.join('\r\n'), 'binary');
 
         serverSocket.write(BinHeader);
-        serverSocket.end(BinBody);
+        serverSocket.write(BinBody);
     });
 })();
 

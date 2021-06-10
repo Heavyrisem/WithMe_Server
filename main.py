@@ -45,26 +45,26 @@ async def run_ocr(file: UploadFile = File(...)):
             detail="not allowed extension"
         )
     image = await file.read()
-    print(image)
-    f = open(file.filename, 'wb')
+    # print(image)
+    # f = open(file.filename, 'wb')
     # for b in image:
     #     print(b)
-    f.write(image)
-    f.close()
+    # f.write(image)
+    # f.close()
     detection = Prediction_OCR(image)
 
-    # if (detection and detection.result):
-    #     Return.result = detection.result
-    # elif (detection.error):
-    #     raise HTTPException(
-    #         status_code=418,
-    #         detail=detection.error
-    #     )
-    # else:
-    #     raise HTTPException(
-    #         status_code=500,
-    #         detail="unknown error"
-    #     )
+    if (detection and detection.result):
+        Return.result = detection.result
+    elif (detection.error):
+        raise HTTPException(
+            status_code=418,
+            detail=detection.error
+        )
+    else:
+        raise HTTPException(
+            status_code=500,
+            detail="unknown error"
+        )
     return Return
 
 

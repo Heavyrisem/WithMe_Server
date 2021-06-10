@@ -42,11 +42,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var net_1 = __importDefault(require("net"));
 var fs_1 = __importDefault(require("fs"));
 var options = {
-    host: 'localhost',
+    host: '52.231.160.102',
     path: '/ocr',
-    port: 3000,
+    port: 80,
     method: 'POST',
-    image: '../ocr/testData/text1.png'
+    image: '../ocr/testData/cap.png'
 };
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var serverSocket;
@@ -60,6 +60,7 @@ var options = {
                             console.log(b.toString());
                         });
                         serverSocket.on('error', function (e) { console.log(e); });
+                        serverSocket.on('drain', function () { process.exit(); });
                         return [4 /*yield*/, ReadImage(options.image)];
                     case 1:
                         Image = _a.sent();
@@ -95,7 +96,7 @@ var options = {
                         console.log(BinBody);
                         fs_1.default.writeFileSync('./http', Header.join('\r\n') + Body.join('\r\n'), 'binary');
                         serverSocket.write(BinHeader);
-                        serverSocket.end(BinBody);
+                        serverSocket.write(BinBody);
                         return [2 /*return*/];
                 }
             });
