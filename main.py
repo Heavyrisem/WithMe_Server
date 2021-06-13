@@ -5,6 +5,7 @@ from typing import Optional
 from fastapi import FastAPI, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import HTTPException
+# from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from customFunctions import index
@@ -14,21 +15,36 @@ import random
 
 app = FastAPI()
 
+# origins = [
+#     "https://192.168.1.71",
+#     "https://192.168.1.71:3000",
+#     "https://192.168.1.71:3001",
+#     "https://localhost",
+#     "https://localhost:3000",
+#     "https://localhost:3001"
+# ]
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
 
 class API_Response(BaseModel):
     result: Optional[str]
     detail: Optional[str]
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+
+# app.mount("/static", StaticFiles(directory="./static", html = True), name="static")
 
 @app.post("/caption", response_model=API_Response)
 async def run_Image_Caption(file: UploadFile = File(...)):
     image = await file.read()
     print(type(image))
-    testResult = ["코딩을 하는 한지수가 보이네요", "잠을 자는 동현이가 보이네요", "책상 위에 놓인 노트북이 보이네요", "물병 두 개가 보이네요"]
+    # testResult = ["코딩을 하는 한지수가 보이네요", "잠을 자는 동현이가 보이네요", "책상 위에 놓인 노트북이 보이네요", "물병 두 개가 보이네요"]
 
     return {"result": random.choice(testResult)}
 

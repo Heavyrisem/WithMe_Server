@@ -46,7 +46,7 @@ var options = {
     path: '/ocr',
     port: 80,
     method: 'POST',
-    image: '../ocr/testData/cap.png'
+    image: '../ocr/testData/cap2.png'
 };
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var serverSocket;
@@ -57,10 +57,12 @@ var options = {
                 switch (_a.label) {
                     case 0:
                         serverSocket.on("data", function (b) {
-                            console.log(b.toString());
+                            var Str = b.toString();
+                            console.log(Str);
+                            if (Str.split("").reverse()[0] == "\n" || "\r")
+                                process.exit();
                         });
                         serverSocket.on('error', function (e) { console.log(e); });
-                        serverSocket.on('drain', function () { process.exit(); });
                         return [4 /*yield*/, ReadImage(options.image)];
                     case 1:
                         Image = _a.sent();

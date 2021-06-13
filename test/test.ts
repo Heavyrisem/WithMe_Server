@@ -6,16 +6,18 @@ const options = {
     path: '/ocr',
     port: 80,
     method: 'POST',
-    image: '../ocr/testData/cap.png'
+    image: '../ocr/testData/cap2.png'
 };
 
 (async() => {
     const serverSocket = net.connect(options.port, options.host, async () => {
         serverSocket.on("data", (b) => {
-            console.log(b.toString());
+            let Str = b.toString();
+
+            console.log(Str);
+            if (Str.split("").reverse()[0] == "\n" || "\r") process.exit()
         });
         serverSocket.on('error', (e) => {console.log(e)})
-        serverSocket.on('drain', () => {process.exit()})
 
         const Image = await ReadImage(options.image);
         const Boundary = '------------------------d599bfa08c4b3286';
