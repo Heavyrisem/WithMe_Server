@@ -1,5 +1,4 @@
-== Info:   Trying 52.231.160.102...
-== Info: TCP_NODELAY set
-== Info: Connected to 52.231.160.102 (52.231.160.102) port 80 (#0)
-== Info: couldn't open file "../ocr/testData/R720x0.jpeg'"
+== Info:   Trying 52.231.160.102:443...
+== Info: connect to 52.231.160.102 port 443 failed: Connection refused
+== Info: Failed to connect to 52.231.160.102 port 443: Connection refused
 == Info: Closing connection 0

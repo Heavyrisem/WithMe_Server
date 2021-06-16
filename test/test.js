@@ -46,7 +46,7 @@ var options = {
     path: '/ocr',
     port: 80,
     method: 'POST',
-    image: '../ocr/testData/cap2.png'
+    image: '../ocr/testData/R720x0.jpeg'
 };
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var serverSocket;

@@ -6,7 +6,7 @@ const options = {
     path: '/ocr',
     port: 80,
     method: 'POST',
-    image: '../ocr/testData/cap2.png'
+    image: '../ocr/testData/R720x0.jpeg'
 };
 
 (async() => {

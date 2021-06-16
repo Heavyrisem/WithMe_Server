@@ -1,3 +1,4 @@
+from ocr.TTS import TextToBase64
 import uvicorn
 
 from typing import Optional
@@ -5,7 +6,7 @@ from typing import Optional
 from fastapi import FastAPI, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import HTTPException
-# from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from customFunctions import index
@@ -15,21 +16,22 @@ import random
 
 app = FastAPI()
 
-# origins = [
-#     "https://192.168.1.71",
-#     "https://192.168.1.71:3000",
-#     "https://192.168.1.71:3001",
-#     "https://localhost",
-#     "https://localhost:3000",
-#     "https://localhost:3001"
-# ]
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+origins = [
+    "https://192.168.0.53",
+    "https://192.168.0.53:3000",
+    "https://192.168.0.53:3001",
+    "https://localhost",
+    "https://localhost:3000",
+    "https://localhost:3001",
+    "*"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class API_Response(BaseModel):
@@ -81,6 +83,23 @@ async def run_ocr(file: UploadFile = File(...)):
             status_code=500,
             detail="unknown error"
         )
+    return Return
+
+
+
+class TTS_Request(BaseModel):
+    text: str
+@app.post("/tts", response_model=API_Response)
+async def run_TTS(Body: TTS_Request):
+    Return = API_Response()
+
+    tts = TextToBase64(Body.text)
+
+    if (tts.result):
+        Return.result = tts.result
+    else:
+        Return.detail = tts.err
+    
     return Return
 
 
