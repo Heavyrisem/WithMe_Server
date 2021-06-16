@@ -2,3 +2,4 @@ google-cloud-vision
 fastapi
 python-multipart
 aiofiles
+google-cloud-texttospeech
