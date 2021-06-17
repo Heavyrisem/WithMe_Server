@@ -18,7 +18,7 @@ def TextToBase64(text: str):
         synthesis_input = texttospeech.SynthesisInput(text=text)
 
         voice = texttospeech.VoiceSelectionParams(
-            language_code="ko-KR", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+            language_code="ko-KR", name="ko-KR-Wavenet-C", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
         )
 
         audio_config = texttospeech.AudioConfig(
