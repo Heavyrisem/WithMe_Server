@@ -20,3 +20,6 @@ Nginx Loadbalance 서버 구축
 
 ### 6.7
 Google Cloud Vision API 추가 (OCR)
+
+### 6.17
+Google Cloud Speech To Text API 추가 (TTS)
