@@ -1,4 +1,11 @@
 lateral-concord-298602-8ec431ba3c5b.json
+lateral-concord-298602-00ecb37ddd21.json
 testData
 __pycache__
 package-lock.json
+node_modules
+temp/*
+archive
+archive/*
+.vscode
+*.tar

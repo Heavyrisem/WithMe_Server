@@ -8,6 +8,15 @@
 ## 개발일지
 
 uvicorn main:app --reload
+docker build -t TARGET .
+docker run TARGET -p 3001:3001
+docker withme save -o wmserver.tar
+docker load -i wmserver.tar
+
+nc -l PORT > wmserver.tar
+pv wmserver.tar | nc SERVERIP PORT
+
+https://itholic.github.io/docker-copy/
 
 ### 5.24
 FastAPI 기본코드 알아보기
@@ -20,3 +29,9 @@ Nginx Loadbalance 서버 구축
 
 ### 6.7
 Google Cloud Vision API 추가 (OCR)
+
+### 6.17
+Google Cloud Speech To Text API 추가 (TTS)
+
+### 8.18
+API v2 추가, 배포

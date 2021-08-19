@@ -1,10 +1,8 @@
-from ocr.TTS import TextToBase64
 import uvicorn
 
 from typing import Optional
 
 from fastapi import FastAPI, File, UploadFile
-from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -12,7 +10,8 @@ from pydantic import BaseModel
 from customFunctions import index
 from ocr.prediction import Prediction_OCR
 
-import random
+from caption.prediction import Prediction_Caption
+import uuid
 
 app = FastAPI()
 
@@ -42,18 +41,8 @@ class API_Response(BaseModel):
 
 # app.mount("/static", StaticFiles(directory="./static", html = True), name="static")
 
-@app.post("/caption", response_model=API_Response)
-async def run_Image_Caption(file: UploadFile = File(...)):
-    image = await file.read()
-    print(type(image))
-    # testResult = ["코딩을 하는 한지수가 보이네요", "잠을 자는 동현이가 보이네요", "책상 위에 놓인 노트북이 보이네요", "물병 두 개가 보이네요"]
-
-    return {"result": random.choice(testResult)}
-
-@app.post("/ocr", response_model=API_Response)
-async def run_ocr(file: UploadFile = File(...)):
-    print(file.filename)
-    Return = API_Response()
+@app.post("/upload", response_model=API_Response)
+async def Upload(file: UploadFile = File(...)):
     ALLOW_TYPES = ['jpg', 'jpeg', 'png', 'jpg']
     file_type = file.filename.split(".")[-1]
     
@@ -62,47 +51,90 @@ async def run_ocr(file: UploadFile = File(...)):
             status_code=422,
             detail="not allowed extension"
         )
+
+    Result = API_Response()
+    Token = str(uuid.uuid4())+"."+file_type
     image = await file.read()
-    # print(image)
-    # f = open(file.filename, 'wb')
-    # for b in image:
-    #     print(b)
-    # f.write(image)
-    # f.close()
-    detection = Prediction_OCR(image)
-
-    if (detection and detection.result):
-        Return.result = detection.result
-    elif (detection.error):
-        raise HTTPException(
-            status_code=418,
-            detail=detection.error
-        )
+    try:
+        f = open("./temp/"+Token, "wb")
+        f.write(image)
+    except Exception as e:
+        Result.detail = str(e)
     else:
-        raise HTTPException(
-            status_code=500,
-            detail="unknown error"
-        )
-    return Return
+        Result.result = Token
+    finally:
+        return Result
 
 
+class AI_Token(BaseModel):
+    token: str
 
-class TTS_Request(BaseModel):
-    text: str
-@app.post("/tts", response_model=API_Response)
-async def run_TTS(Body: TTS_Request):
+@app.post("/caption", response_model=API_Response)
+async def run_ocr(Body: AI_Token):
     Return = API_Response()
-
-    tts = TextToBase64(Body.text)
-
-    if (tts.result):
-        Return.result = tts.result
+    try:
+        image = open("./temp/"+Body.token, "rb").read()
+        detection = Prediction_Caption(image)
+    except Exception as e:
+        print(e)
+        Return.detail = "Wrong Token"
     else:
-        Return.detail = tts.err
-    
+        if (detection and detection.result):
+            Return.result = detection.result
+        elif (detection.error):
+            raise HTTPException(
+                status_code=418,
+                detail=detection.error
+            )
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail="unknown error"
+            )
     return Return
+
+@app.post("/ocr", response_model=API_Response)
+async def run_ocr(Body: AI_Token):
+    Return = API_Response()
+    try:
+        image = open("./temp/"+Body.token, "rb").read()
+        detection = Prediction_OCR(image)
+    except Exception as e:
+        print(e)
+        Return.detail = "Wrong Token"
+    else:
+        if (detection and detection.result):
+            Return.result = detection.result
+        elif (detection.error):
+            raise HTTPException(
+                status_code=418,
+                detail=detection.error
+            )
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail="unknown error"
+            )
+    return Return
+
+
+
+# class TTS_Request(BaseModel):
+#     text: str
+# @app.post("/tts", response_model=API_Response)
+# async def run_TTS(Body: TTS_Request):
+#     Return = API_Response()
+
+#     tts = TextToBase64(Body.text)
+
+#     if (tts.result):
+#         Return.result = tts.result
+#     else:
+#         Return.detail = tts.err
+    
+#     return Return
 
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=3001, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=3001)

@@ -3,3 +3,9 @@ fastapi
 python-multipart
 aiofiles
 google-cloud-texttospeech
+google-cloud-speech
+uvicorn
+numpy
+scipy==1.1.0
+scikit-image
+matplotlib
