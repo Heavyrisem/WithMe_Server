@@ -8,12 +8,18 @@
 ## 개발일지
 
 uvicorn main:app --reload
+
 docker build -t TARGET .
+
 docker run TARGET -p 3001:3001
+
 docker withme save -o wmserver.tar
+
 docker load -i wmserver.tar
 
+
 nc -l PORT > wmserver.tar
+
 pv wmserver.tar | nc SERVERIP PORT
 
 https://itholic.github.io/docker-copy/
