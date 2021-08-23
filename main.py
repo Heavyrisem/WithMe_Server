@@ -41,29 +41,29 @@ class API_Response(BaseModel):
 
 # app.mount("/static", StaticFiles(directory="./static", html = True), name="static")
 
-@app.post("/upload", response_model=API_Response)
-async def Upload(file: UploadFile = File(...)):
-    ALLOW_TYPES = ['jpg', 'jpeg', 'png', 'jpg']
-    file_type = file.filename.split(".")[-1]
+# @app.post("/upload", response_model=API_Response)
+# async def Upload(file: UploadFile = File(...)):
+#     ALLOW_TYPES = ['jpg', 'jpeg', 'png', 'jpg']
+#     file_type = file.filename.split(".")[-1]
     
-    if (index(ALLOW_TYPES, file_type) == None):
-        raise HTTPException(
-            status_code=422,
-            detail="not allowed extension"
-        )
+#     if (index(ALLOW_TYPES, file_type) == None):
+#         raise HTTPException(
+#             status_code=422,
+#             detail="not allowed extension"
+#         )
 
-    Result = API_Response()
-    Token = str(uuid.uuid4())+"."+file_type
-    image = await file.read()
-    try:
-        f = open("./temp/"+Token, "wb")
-        f.write(image)
-    except Exception as e:
-        Result.detail = str(e)
-    else:
-        Result.result = Token
-    finally:
-        return Result
+#     Result = API_Response()
+#     Token = str(uuid.uuid4())+"."+file_type
+#     image = await file.read()
+#     try:
+#         f = open("./temp/"+Token, "wb")
+#         f.write(image)
+#     except Exception as e:
+#         Result.detail = str(e)
+#     else:
+#         Result.result = Token
+#     finally:
+#         return Result
 
 
 class AI_Token(BaseModel):
