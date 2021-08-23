@@ -7,11 +7,12 @@ from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from customFunctions import index
+from customFunctions import index, save
 from ocr.prediction import Prediction_OCR
+from ocr.TTS import TextToBase64, TTS_Result
+
 
 from caption.prediction import Prediction_Caption
-import uuid
 
 app = FastAPI()
 
@@ -37,47 +38,22 @@ class API_Response(BaseModel):
     result: Optional[str]
     detail: Optional[str]
 
-
-
-# app.mount("/static", StaticFiles(directory="./static", html = True), name="static")
-
-# @app.post("/upload", response_model=API_Response)
-# async def Upload(file: UploadFile = File(...)):
-#     ALLOW_TYPES = ['jpg', 'jpeg', 'png', 'jpg']
-#     file_type = file.filename.split(".")[-1]
-    
-#     if (index(ALLOW_TYPES, file_type) == None):
-#         raise HTTPException(
-#             status_code=422,
-#             detail="not allowed extension"
-#         )
-
-#     Result = API_Response()
-#     Token = str(uuid.uuid4())+"."+file_type
-#     image = await file.read()
-#     try:
-#         f = open("./temp/"+Token, "wb")
-#         f.write(image)
-#     except Exception as e:
-#         Result.detail = str(e)
-#     else:
-#         Result.result = Token
-#     finally:
-#         return Result
-
-
-class AI_Token(BaseModel):
-    token: str
-
 @app.post("/caption", response_model=API_Response)
-async def run_ocr(Body: AI_Token):
+async def run_ocr(file: UploadFile = File(...)):
     Return = API_Response()
+    ALLOW_TYPES = ['jpg', 'jpeg', 'png', 'jpg']
+    file_type = file.filename.split(".")[-1]
+    
+    if (index(ALLOW_TYPES, file_type) == None):
+        raise HTTPException(
+            status_code=422,
+            detail="not allowed extension"
+        )
     try:
-        image = open("./temp/"+Body.token, "rb").read()
-        detection = Prediction_Caption(image)
+        detection = Prediction_Caption(await save(file))
     except Exception as e:
         print(e)
-        Return.detail = "Wrong Token"
+        Return.detail = str(e)
     else:
         if (detection and detection.result):
             Return.result = detection.result
@@ -94,14 +70,21 @@ async def run_ocr(Body: AI_Token):
     return Return
 
 @app.post("/ocr", response_model=API_Response)
-async def run_ocr(Body: AI_Token):
+async def run_ocr(file: UploadFile = File(...)):
     Return = API_Response()
+    ALLOW_TYPES = ['jpg', 'jpeg', 'png', 'jpg']
+    file_type = file.filename.split(".")[-1]
+    
+    if (index(ALLOW_TYPES, file_type) == None):
+        raise HTTPException(
+            status_code=422,
+            detail="not allowed extension"
+        )
     try:
-        image = open("./temp/"+Body.token, "rb").read()
-        detection = Prediction_OCR(image)
+        detection = Prediction_OCR(await save(file))
     except Exception as e:
         print(e)
-        Return.detail = "Wrong Token"
+        Return.detail = str(e)
     else:
         if (detection and detection.result):
             Return.result = detection.result
@@ -119,20 +102,20 @@ async def run_ocr(Body: AI_Token):
 
 
 
-# class TTS_Request(BaseModel):
-#     text: str
-# @app.post("/tts", response_model=API_Response)
-# async def run_TTS(Body: TTS_Request):
-#     Return = API_Response()
+class TTS_Request(BaseModel):
+    text: str
+@app.post("/tts", response_model=API_Response)
+async def run_TTS(Body: TTS_Request):
+    Return = API_Response()
 
-#     tts = TextToBase64(Body.text)
+    tts = TextToBase64(Body.text)
 
-#     if (tts.result):
-#         Return.result = tts.result
-#     else:
-#         Return.detail = tts.err
+    if (tts.result):
+        Return.result = tts.result
+    else:
+        Return.detail = tts.err
     
-#     return Return
+    return Return
 
 
 
