@@ -5,8 +5,8 @@ LABEL maintainer = "pyo1748@naver.com"
 COPY . /app/server
 WORKDIR /app/server
 
+RUN apt-get update
+RUN apt-get -y install libgl1-mesa-glx
 RUN pip install -r requires.txt
-
-ENV GOOGLE_APPLICATION_CREDENTIALS=lateral-concord-298602-00ecb37ddd21.json
 
 ENTRYPOINT [ "python", "main.py" ]
