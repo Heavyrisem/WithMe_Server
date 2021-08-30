@@ -6,3 +6,4 @@ numpy
 scipy==1.1.0
 scikit-image
 matplotlib
+easyocr
