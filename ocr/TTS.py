@@ -22,7 +22,7 @@ def TextToBase64(text: str):
         )
 
         audio_config = texttospeech.AudioConfig(
-            audio_encoding=texttospeech.AudioEncoding.LINEAR16
+            audio_encoding=texttospeech.AudioEncoding.MP3
         )
 
         response = client.synthesize_speech(

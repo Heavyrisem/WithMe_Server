@@ -15,6 +15,6 @@ async def save(file: UploadFile):
     file_type = file.filename.split(".")[-1]
     Token = str(uuid.uuid4())+"."+file_type
     image = await file.read()
-    f = open("./tem1p/"+Token, "wb")
+    f = open("./temp/"+Token, "wb")
     f.write(image)
     return image

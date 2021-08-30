@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from customFunctions import index, save
 from ocr.prediction import Prediction_OCR
-from ocr.TTS import TextToBase64, TTS_Result
+# from ocr.TTS import TextToBase64, TTS_Result
 
 
 from caption.prediction import Prediction_Caption
@@ -102,20 +102,20 @@ async def run_ocr(file: UploadFile = File(...)):
 
 
 
-class TTS_Request(BaseModel):
-    text: str
-@app.post("/tts", response_model=API_Response)
-async def run_TTS(Body: TTS_Request):
-    Return = API_Response()
+# class TTS_Request(BaseModel):
+#     text: str
+# @app.post("/tts", response_model=API_Response)
+# async def run_TTS(Body: TTS_Request):
+#     Return = API_Response()
 
-    tts = TextToBase64(Body.text)
+#     tts = TextToBase64(Body.text)
 
-    if (tts.result):
-        Return.result = tts.result
-    else:
-        Return.detail = tts.err
+#     if (tts.result):
+#         Return.result = tts.result
+#     else:
+#         Return.detail = tts.err
     
-    return Return
+#     return Return
 
 
 
