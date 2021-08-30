@@ -7,6 +7,7 @@ WORKDIR /app/server
 
 RUN apt-get update
 RUN apt-get -y install libgl1-mesa-glx
+RUN apt-get -y install libglib2.0-0
 RUN pip install -r requires.txt
 
 ENTRYPOINT [ "python", "main.py" ]
