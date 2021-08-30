@@ -6,7 +6,7 @@ from pydantic import BaseModel
 # from google.cloud import vision
 # client = vision.ImageAnnotatorClient()
 
-reader = easyocr.Reader(['ko', 'en'], gpu=False)
+reader = easyocr.Reader(['ko', 'en'], gpu=True)
 
 class OCR_Result(BaseModel):
     result: Optional[str]
