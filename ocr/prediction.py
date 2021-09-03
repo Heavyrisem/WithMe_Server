@@ -22,7 +22,7 @@ def Prediction_OCR(image: bytes) -> OCR_Result:
         else: Return.result = Return.result[0][1]
     except Exception as e:
         print(e)
-        Return.error = "인식에 실패했습니다."
+        Return.result = "인식에 실패했습니다."
     return Return
 
 # def test():
