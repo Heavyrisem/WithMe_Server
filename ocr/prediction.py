@@ -17,8 +17,9 @@ def Prediction_OCR(image: bytes) -> OCR_Result:
     Return = OCR_Result()
 
     try:
-        Return.result = reader.readtext(image, detail=0.2)[0][1]
+        Return.result = reader.readtext(image, detail=1)
         if (not Return.result): Return.result = "인식된 글자가 없습니다."
+        else: Return.result = Return.result[0][1]
     except Exception as e:
         print(e)
         Return.error = "인식에 실패했습니다."
@@ -27,7 +28,8 @@ def Prediction_OCR(image: bytes) -> OCR_Result:
 # def test():
 #     with io.open('./test2.jpeg', 'rb') as img:
 #         i = img.read()
-#         Predction_OCR(i)
+#         print(Prediction_OCR(i))
+# test()
 # def Prediction_OCR(image: bytes):
 #     Return = OCR_Result()
 
