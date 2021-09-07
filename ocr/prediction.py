@@ -17,9 +17,14 @@ def Prediction_OCR(image: bytes) -> OCR_Result:
     Return = OCR_Result()
 
     try:
-        Return.result = reader.readtext(image, detail=1)
-        if (not Return.result): Return.result = "인식된 글자가 없습니다."
-        else: Return.result = Return.result[0][1]
+        PredictionResult = reader.readtext(image, detail=1)
+        ResultArray = []
+        if (not PredictionResult): Return.result = "인식된 글자가 없습니다."
+        else: 
+            for sentence in PredictionResult:
+                if sentence[2] >= 0.3:
+                    ResultArray.append(sentence[1])
+            Return.result = ", ".join(ResultArray)
     except Exception as e:
         print(e)
         Return.result = "인식에 실패했습니다."
