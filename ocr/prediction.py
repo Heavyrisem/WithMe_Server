@@ -24,7 +24,7 @@ def Prediction_OCR(image: bytes) -> OCR_Result:
             for sentence in PredictionResult:
                 if sentence[2] >= 0.3:
                     ResultArray.append(sentence[1])
-            Return.result = ", ".join(ResultArray)
+            Return.result = " ".join(ResultArray)
     except Exception as e:
         print(e)
         Return.result = "인식에 실패했습니다."
