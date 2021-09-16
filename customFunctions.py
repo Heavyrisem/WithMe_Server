@@ -11,10 +11,11 @@ def index(a_list: Tuple, value: str):
     except ValueError:
         return None
 
-async def save(file: UploadFile):
+async def save(file: UploadFile, type: str):
     file_type = file.filename.split(".")[-1]
     Token = str(uuid.uuid4())+"."+file_type
     image = await file.read()
-    f = open("./temp/"+Token, "wb")
+
+    f = open("./temp/"+type+"/"+Token, "wb")
     f.write(image)
     return image
