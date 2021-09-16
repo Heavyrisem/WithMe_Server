@@ -50,7 +50,7 @@ async def run_ocr(file: UploadFile = File(...)):
             detail="not allowed extension"
         )
     try:
-        detection = Prediction_Caption(await save(file))
+        detection = Prediction_Caption(await save(file, "caption"))
     except Exception as e:
         print(e)
         Return.detail = str(e)
@@ -81,7 +81,7 @@ async def run_ocr(file: UploadFile = File(...)):
             detail="not allowed extension"
         )
     try:
-        detection = Prediction_OCR(await save(file))
+        detection = Prediction_OCR(await save(file, "ocr"))
     except Exception as e:
         print(e)
         Return.detail = str(e)
